@@ -198,11 +198,11 @@ console.log(vehiculos.reduce( (v1, v2) => v1.precio < v2.precio ? v1 : v2));
 // filter y reduce
 console.log("El vehículo más caro de Toyota (el primero de ellos)");
 
-console.log(vehiculos.filter( v => v.marca = "Toyota").reduce( (v1, v2) => v1.precio > v2.precio ? v1 : v2));
+console.log(vehiculos.filter( v => v.marca == "Toyota").reduce( (v1, v2) => v1.precio > v2.precio ? v1 : v2));
 
 console.log("El vehículo más caro de Toyota con 4 puertas (el primero de ellos)");
 
-console.log(vehiculos.filter( v => v.marca = "Toyota" && v.puertas == 4).reduce( (v1, v2) => v1.precio > v2.precio ? v1 : v2));
+console.log(vehiculos.filter( v => v.marca == "Toyota" && v.puertas == 4).reduce( (v1, v2) => v1.precio > v2.precio ? v1 : v2));
 
 console.log("Los vehículos con el precio más alto");
 const precioMasAlto = vehiculos.reduce( (v1, v2) => v1.precio > v2.precio ? v1 : v2).precio;
