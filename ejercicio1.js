@@ -60,15 +60,49 @@ Ejemplo: si tenemos un array llamado personas de objetos con nombre y edad
 
 console.log("Todos los vehiculos de la marca Toyota"); // son 4
 
+/* A "mano"
+const toyotas = [];
+for (const v of vehiculos) {
+    if(v.marca == "Toyota") {
+        toyotas.push(v);
+    }
+}
+*/
+
+/* COn uan función "normal"
+function filtrarToyotas(v) {
+    return v.marca == "Toyota";
+}
+
+console.log(vehiculos.filter(filtrarToyotas));
+*/
+
+/* Con una función anónima 
+console.log(vehiculos.filter(function(v) { return v.marca == "Toyota" }));
+
+*/
+
+console.table(vehiculos.filter( v => v.marca == "Toyota"));
+
 console.log("Todos los vehiculos con 4 puertas"); // Son 33
+
+console.table(vehiculos.filter( v => v.puertas == 4));
 
 console.log("Todos los vehiculos de más de 30000 euros"); // Son 21
 
+console.table(vehiculos.filter( v => v.precio > 30000));
+
 console.log("Todos los vehiculos de la más de 3000 euros y menos de 50000"); //Son 15
+
+console.table(vehiculos.filter( v => v.precio > 30000 && v.precio < 50000));
 
 console.log("Todos los vehiculos de 4 puertas y tipo SUV"); // Son 21
 
-console.log("Todos los vehiculos de 4 puertas, tipo SUV y de Toyota"); // Son 2
+console.table(vehiculos.filter( v => v.puertas == 4 && v.tipo.toLowerCase() == "suv"));
+
+console.log("Todos los vehiculos de 4 puertas, tipo SUV y de Lexus"); // Son 2
+
+console.table(vehiculos.filter( v => v.puertas == 4 && v.tipo.toLowerCase() == "suv" && v.marca.toLocaleLowerCase() == "lexus"));
 
 
 /* map: devuelve un nuevo array con los elementos procesados según la función indicada
@@ -85,18 +119,29 @@ Ejemplo: si tenemos un array llamado personas de objetos con nombre y edad
 
 console.log("Todas las marcas (pueden aparecer repetidos)");
 
+console.log(vehiculos.map( v => v.marca));
+
 console.log("Todos los tipos (pueden aparecer repetidos)"); 
+
+console.log(vehiculos.map( v => v.tipo));
 
 console.log("Todos las precios con un 21% de IVA");
 
+console.log(vehiculos.map( v => v.precio * 1.21));
+
 console.log("Devolver objetos con la marca, puertas y precio");
+
+console.log(vehiculos.map( v => { return {marca: v.marca, puertas: v.puertas, precio: v.precio} }));
 
 // filter y luego map
 console.log("Todos las marcas (pueden aparecer repetidos) con 4 puertas");
 
+console.log(vehiculos.filter(v => v.puertas == 4).map(v => v.marca));
+
 // filter y luego map
 console.log("Devolver objetos con la matrículas, puertas y precio de los Ford");
 
+console.log(vehiculos.filter( v => v.marca == "Ford").map(v => { return {matricula: v.matricula, puertas: v.puertas, precio: v.precio} }))
 
 /* every devuelve true si todos los elementos del array cumplen la condición indicada
 Ejemplo: si tenemos un array llamado personas de objetos con nombre y edad
@@ -106,10 +151,16 @@ Ejemplo: si tenemos un array llamado personas de objetos con nombre y edad
 
 console.log("Si todos los vehículos tienen 4 puertas"); // false
 
+console.log(vehiculos.every(v => v.puertas == 4));
+
 console.log("Si todos los vehículos tienen 2 o más puertas"); // true
+
+console.log(vehiculos.every(v => v.puertas >= 2));
 
 // Se puede hacer todo como every pero probar con un filter y luego every
 console.log("Si todos los vehículos Toyota tienen 4 o más puertas"); // false
+
+console.log(vehiculos.filter(v => v.marca == "Toyota").every(v => v.puertas >= 4));
 
 
 /* some devuelve true si alguno de los elementos del array cumplen la condición indicada
@@ -120,7 +171,13 @@ Ejemplo: si tenemos un array llamado personas de objetos con nombre y edad
 
 console.log("Si algún vehículo tiene 5 puertas"); // true
 
+console.log(vehiculos.some( v => v.puertas >= 5));
+
+
 console.log("Si algún vehículo tiene 5 puertas y es de Hyundai"); // true
+
+console.log(vehiculos.some( v => v.puertas >= 5 && v.marca == "Hyundai"));
+
 
 /* reduce devuelve un solo valor. La función recibe el primer y segundo elemento del array, devolvemos uno de ellos
 y se le pasa al tercer elemento del array y así sucesivamente.
@@ -132,9 +189,32 @@ Ejemplo: si tenemos un array llamado personas de objetos con nombre y edad
 
 console.log("El vehículo más caro (el primero de ellos)");
 
+console.log(vehiculos.reduce( (v1, v2) => v1.precio > v2.precio ? v1 : v2));
+
 console.log("El precio más barato (el primero de ellos)");
+
+console.log(vehiculos.reduce( (v1, v2) => v1.precio < v2.precio ? v1 : v2));
 
 // filter y reduce
 console.log("El vehículo más caro de Toyota (el primero de ellos)");
 
+console.log(vehiculos.filter( v => v.marca = "Toyota").reduce( (v1, v2) => v1.precio > v2.precio ? v1 : v2));
+
 console.log("El vehículo más caro de Toyota con 4 puertas (el primero de ellos)");
+
+console.log(vehiculos.filter( v => v.marca = "Toyota" && v.puertas == 4).reduce( (v1, v2) => v1.precio > v2.precio ? v1 : v2));
+
+console.log("Los vehículos con el precio más alto");
+const precioMasAlto = vehiculos.reduce( (v1, v2) => v1.precio > v2.precio ? v1 : v2).precio;
+console.log(vehiculos.filter( v => v.precio == precioMasAlto));
+
+// Esto no es lo más óptimo pues hace el reduce 49 veces
+//console.log(vehiculos.filter( v => v.precio == vehiculos.reduce( (v1, v2) => v1.precio > v2.precio ? v1 : v2).precio));
+
+const precios = [100, 50, 30, 67, 200, 40];
+console.log("La suma de todos los precios");
+console.log(precios.reduce( (p1, p2) => p1 + p2));
+
+console.log("La suma de todos los precios mayores de 50");
+console.log(precios.filter( p => p > 50).reduce( (p1, p2) => p1 + p2));
+
